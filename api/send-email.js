@@ -15,7 +15,7 @@ const { Resend } = require('resend');
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 // 🧪 Testing — all emails go here
-const TEST_EMAIL  = 'khooharorazzaque@gmail.com';
+const OWNER_EMAIL  = 'khooharorazzaque@gmail.com';
 
 // ✅ Resend's free onboarding domain — works WITHOUT verifying your own domain
 const FROM_EMAIL  = 'onboarding@resend.dev';
