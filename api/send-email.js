@@ -20,7 +20,7 @@ const resend = new Resend(process.env.RESEND_API_KEY);
 const OWNER_EMAIL = 'Info@parkingpartner.co.uk';
 
 // ✅ Use Resend test domain (no domain needed)
-const FROM_EMAIL  = 'noreply@parkingpartner.co.uk';
+const FROM_EMAIL  = 'onboarding@resend.dev';
 
 module.exports = async function handler(req, res) {
   // ── CORS ─────────────────────────────────────────────
