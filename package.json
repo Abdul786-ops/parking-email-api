@@ -1,0 +1,8 @@
+{
+  "name": "parking-email-api",
+  "version": "1.0.0",
+  "description": "Serverless email API for Parking Partner using Resend",
+  "dependencies": {
+    "resend": "^3.2.0"
+  }
+}
