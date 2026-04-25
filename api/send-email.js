@@ -139,7 +139,7 @@ module.exports = async function handler(req, res) {
               Contact us at <a href="mailto:info@parkingpartner.co.uk" style="color:#f5a623;text-decoration:none;">info@parkingpartner.co.uk</a>
             </p>
             <p style="margin:8px 0 0;font-size:11px;color:#aaa;">
-              Parking Partner Ltd &bull; United Kingdom<br/>
+              Parking Partner &bull; United Kingdom<br/>
               &copy; ${new Date().getFullYear()} Parking Partner. All rights reserved.
             </p>
           </td>
