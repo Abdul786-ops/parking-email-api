@@ -21,6 +21,7 @@ module.exports = async function handler(req, res) {
     arrivalTerminal, arrivalFlightNo,
     vehicleMake, vehicleModel, vehicleColor, vehicleReg,
     cancellationCover, smsConfirmation, paymentDate,
+    bookingReference,
   } = req.body;
 
   const buildEmail = (isOwner) => `
@@ -62,7 +63,7 @@ module.exports = async function handler(req, res) {
               <tr>
                 <td>
                   <p style="margin:0;font-size:11px;color:#666;text-transform:uppercase;letter-spacing:1px;">Booking Reference</p>
-                  <p style="margin:4px 0 0;font-size:20px;font-weight:900;color:#0a2540;">${bookingId}</p>
+                  <p style="margin:4px 0 0;font-size:20px;font-weight:900;color:#0a2540;">${bookingReference || bookingId}</p>
                 </td>
                 <td align="right">
                   <p style="margin:0;font-size:11px;color:#666;">Date</p>
@@ -129,6 +130,70 @@ module.exports = async function handler(req, res) {
               </tr>
             </table>
 
+            ${!isOwner ? `
+            <!-- CUSTOMER SPECIFIC INSTRUCTIONS -->
+            <div style="background:#fff3e0;border-left:4px solid #f5a623;padding:20px;margin:24px 0;border-radius:8px;">
+              <h3 style="color:#0a2540;margin:0 0 12px 0;">Thank you for choosing Park Compare Limited</h3>
+              
+              <div style="color:#d97706;font-size:14px;margin:0 0 16px 0;font-weight:600;">
+                ⚠️ Important Information:
+              </div>
+              
+              <ul style="margin:0;padding-left:20px;color:#333;font-size:14px;line-height:1.6;">
+                <li>Airport levy charges of £13 each way is not included in the parking price.</li>
+                <li>You are only required to hand over the ignition key and any relevant security fobs — please keep all other keys.</li>
+                <li>Please pay entry fee of £13.00 at the payment machine before handing over the keys and carpark ticket to the driver.</li>
+              </ul>
+              
+              <p style="font-weight:600;margin:20px 0 10px 0;">Please find the parking procedures below to ensure a smooth and hassle-free experience.</p>
+              
+              <div style="background:#0a2540;color:#fff;padding:12px;border-radius:8px;margin:16px 0;">
+                <strong>📞 *Please call 07907658823 when you are 30 minutes away from the airport.*</strong>
+                <p style="margin:8px 0 0 0;font-size:12px;color:#f5a623;">Arriving without prior notice may result in a 30-minute wait and additional car park charges.</p>
+              </div>
+              
+              <h4 style="color:#0a2540;margin:20px 0 10px 0;">Departure Procedure:</h4>
+              <div style="background:#f0f7ff;background:#e8f0fe;padding:12px;border-radius:8px;margin:10px 0;">
+                <strong>Short Stay Orange Car Park</strong><br/>
+                Terminal Rd S, Stansted, CM24 1QW<br/>
+                <a href="https://maps.app.goo.gl/eqsoQTsRrguyNeSn9" style="color:#f5a623;">https://maps.app.goo.gl/eqsoQTsRrguyNeSn9</a>
+              </div>
+              
+              <h4 style="color:#0a2540;margin:20px 0 10px 0;">Arrival procedure:</h4>
+              <div style="background:#e8f0fe;padding:12px;border-radius:8px;margin:10px 0;">
+                After you have collected all of your entire luggage, and you are completely through Customs only then call us on: <strong>07907658823</strong>.<br/><br/>
+                Please make your way to <strong>ORANGE car park Row "A-H"</strong>. Your vehicle would be delivered within 30 minutes after your phone call.
+              </div>
+              
+              <h4 style="color:#0a2540;margin:20px 0 10px 0;">Additional Information</h4>
+              <ul style="margin:0;padding-left:20px;color:#333;font-size:13px;line-height:1.6;">
+                <li><strong>Delays:</strong> During busy periods or unforeseen circumstances, delays may occur.</li>
+                <li><strong>Early/Late Drop-off:</strong> Requires 2–3 hours' notice.</li>
+                <li><strong>Early/Late Returns:</strong> Requires at least 24 hours' notice.</li>
+                <li><strong>Additional Charges:</strong> £20/day Fees apply for extra days beyond the booking period.</li>
+                <li><strong>Valuables:</strong> Please ensure all valuables are removed from your vehicle before handing over your keys, as the company cannot be held responsible for any loss or damage.</li>
+              </ul>
+              
+              <hr style="margin:20px 0;border-color:#f5a62330;"/>
+              
+              <p style="font-weight:600;margin:10px 0;">*This service is provided by Park compare Limited.*</p>
+              
+              <hr style="margin:20px 0;border-color:#f5a62330;"/>
+              
+              <h4 style="color:#0a2540;margin:20px 0 10px 0;">Disclaimer</h4>
+              <p style="margin:0 0 10px 0;"><strong>Parking Partner</strong> acts solely as a booking comparison and reservation service.</p>
+              <p style="margin:0 0 10px 0;">All parking services are provided by independent third-party operators.</p>
+              <p style="margin:0 0 10px 0;">We are not responsible for:</p>
+              <ul style="margin:0;padding-left:20px;color:#333;font-size:13px;line-height:1.6;">
+                <li>Vehicle damage or loss</li>
+                <li>Operational delays</li>
+                <li>Missed flights or transfers</li>
+                <li>Service quality or performance</li>
+              </ul>
+              <p style="margin:10px 0 0 0;font-size:13px;">All service-related issues must be raised directly with the parking provider.</p>
+            </div>
+            ` : ''}
+
           </td>
         </tr>
 
@@ -139,7 +204,7 @@ module.exports = async function handler(req, res) {
               Contact us at <a href="mailto:info@parkingpartner.co.uk" style="color:#f5a623;text-decoration:none;">info@parkingpartner.co.uk</a>
             </p>
             <p style="margin:8px 0 0;font-size:11px;color:#aaa;">
-              Parking Partner &bull; United Kingdom<br/>
+              Parking Partner • United Kingdom<br/>
               &copy; ${new Date().getFullYear()} Parking Partner. All rights reserved.
             </p>
           </td>
@@ -156,10 +221,10 @@ module.exports = async function handler(req, res) {
     await resend.emails.send({
       from:    `Parking Partner <${FROM_EMAIL}>`,
       to:      customerEmail,
-      subject: `Booking Confirmation for ${airport} Parking - Ref ${bookingId}`,
+      subject: `Booking Confirmation for ${airport} Parking - Ref ${bookingReference || bookingId}`,
       html:    buildEmail(false),
       headers: {
-        'X-Entity-Ref-ID': bookingId,
+        'X-Entity-Ref-ID': bookingReference || bookingId,
       },
     });
 
@@ -167,11 +232,11 @@ module.exports = async function handler(req, res) {
     await resend.emails.send({
       from:     `Parking Partner <${FROM_EMAIL}>`,
       to:       OWNER_EMAIL,
-      subject:  `Booking Received - ${airport} - ${customerName} - Ref ${bookingId}`,
+      subject:  `Booking Received - ${airport} - ${customerName} - Ref ${bookingReference || bookingId}`,
       html:     buildEmail(true),
       reply_to: customerEmail,
       headers: {
-        'X-Entity-Ref-ID': bookingId,
+        'X-Entity-Ref-ID': bookingReference || bookingId,
       },
     });
 
