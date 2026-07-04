@@ -93,7 +93,6 @@ Parking Partner acts as a booking comparison and reservation service only.
 All parking services are provided by independent third-party operators.
 Contact: info@parkingpartner.co.uk | parkingpartner.co.uk
 ` : `---
-Customer contact (reply directly to their inbox if needed): ${customerEmail}
 Contact: info@parkingpartner.co.uk | parkingpartner.co.uk
 `}`;
   };
@@ -385,28 +384,15 @@ Contact: info@parkingpartner.co.uk | parkingpartner.co.uk
     });
 
     // Send to owner
-    //
-    // FIX: reply_to was previously set to `customerEmail`, which changes on every
-    // single send. That means the owner's inbox (info@parkingpartner.co.uk) kept
-    // receiving mail that says "From: bookings@parkingpartner.co.uk" but
-    // "Reply-To: [a different external address every time]". That From/Reply-To
-    // mismatch — especially one that changes per message — is exactly the pattern
-    // spam/phishing filters are trained to flag, and it was almost certainly why
-    // the owner's copy kept landing in Junk. Reply-To is now fixed to your own
-    // domain, matching the customer email's behavior. The customer's email address
-    // is still shown in the "Customer Details" section of the email body, so the
-    // owner can copy it manually if they need to reply directly.
     await resend.emails.send({
       from:     `${FROM_NAME} <${FROM_EMAIL}>`,
       to:       OWNER_EMAIL,
       subject:  ownerSubject,
       html:     buildHtml(true),
       text:     buildPlainText(true),
-      reply_to: FROM_EMAIL,
+      reply_to: customerEmail,           // owner can reply directly to customer
       headers: {
         'X-Entity-Ref-ID': ref,
-        'List-Unsubscribe': `<mailto:unsubscribe@parkingpartner.co.uk?subject=unsubscribe>`,
-        'List-Unsubscribe-Post': 'List-Unsubscribe=One-Click',
       },
     });
 
