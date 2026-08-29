@@ -9,7 +9,7 @@ const resend = new Resend(process.env.RESEND_API_KEY);
 // ============================================================================
 
 const FROM_EMAIL = 'bookings@parkingpartner.co.uk';
-const FROM_NAME = 'Airport Parking';
+const FROM_NAME = "Parking Partner';
 
 
 // ============================================================================
