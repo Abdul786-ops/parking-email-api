@@ -9,7 +9,7 @@ const resend = new Resend(process.env.RESEND_API_KEY);
 // ============================================================================
 
 const FROM_EMAIL = 'bookings@parkingpartner.co.uk';
-const FROM_NAME = 'Airport Parking Deals';
+const FROM_NAME = 'Airport Parking';
 
 
 // ============================================================================
@@ -398,20 +398,104 @@ module.exports = async function handler(req, res) {
   // INSTRUCTIONS
   // ==========================================================================
 
-  const meetGreetInstructions = `
-CALL US: Please call 07907658823 when you are 30 minutes away from the airport.
-Arriving without notice may result in a 30-minute wait and additional car park charges.
+  const meetGreetInstructions = `*Customer Parking Instructions*
 
-DEPARTURE: Short Stay Orange Car Park, Terminal Rd S, Stansted, CM24 1QW
-https://maps.app.goo.gl/eqsoQTsRrguyNeSn9
+*Service Provider Contact*
 
-RETURN: After collecting all luggage and clearing Customs, call 07907658823.
-Make your way to the ORANGE car park, Rows A-H. Your vehicle will be ready within 30 minutes.
+Telephone: *07349851320*
 
-IMPORTANT: Airport levy charges of £13 each way are not included in the parking price.
-Pay the £13.00 entry fee at the payment machine before handing over your keys.
-Only hand over the ignition key and relevant security fobs. Keep all other keys.
-`;
+Please keep this number with you throughout your journey, as you will need to contact the parking provider before arrival and when returning to the airport.
+
+Important Information
+
+* An airport levy of £13 each way is payable directly to the service provider and is not included in your parking price.
+* Please pay the £13 entry fee at the payment machine before handing your car park ticket and vehicle keys to the driver.
+* You only need to hand over the ignition key and any relevant security fobs. Please keep all other keys with you.
+* Please remove all valuables and personal belongings from your vehicle before handing over the keys.
+* Please ensure you have all necessary personal items with you before leaving the vehicle.
+
+Arrival & Drop-Off Procedure
+
+Please call *07349851320* when you are approximately 30 minutes away from Stansted Airport.
+
+This allows the service provider to prepare for your arrival and helps minimise waiting times.
+
+Important: Arriving without prior notice may result in a wait of up to 30 minutes and may also result in additional car park charges.
+
+Departure Location
+
+Short Stay Green Multi-Storey Car Park
+Terminal Road S
+Stansted
+CM24 1QW
+
+View Google Maps – Departure Location
+
+https://maps.app.goo.gl/wd1it7EvsgnCcEs27?g_st=ic
+
+
+Once you arrive at the designated location, follow the instructions provided by the service provider and hand over the required keys and car park ticket to the driver.
+
+Return Procedure
+
+After your flight has landed:
+
+1. Collect all your luggage.
+2. Clear Customs and make your way out of the terminal.
+3. Call *07349851320*.
+4. Make your way to the Green Multi-Storey Car Park as instructed by the service provider.
+5. Your vehicle will be prepared and should be ready for collection within approximately 30 minutes.
+
+Please allow additional time during busy periods or if there are unforeseen delays.
+
+Changes to Your Arrival or Return
+
+Early or Late Drop-Off
+
+If you need to arrive earlier or later than your booked time, please provide the service provider with at least 2–3 hours’ notice.
+
+While the provider will do its best to accommodate changes, delays may occur if insufficient notice is given.
+
+Early or Late Return
+
+If your return flight or collection time changes, please provide at least 24 hours’ notice whenever possible.
+
+This helps the provider prepare your vehicle and minimise delays.
+
+Additional Parking Days
+
+If your vehicle remains at the car park beyond the period originally booked, an additional charge of £20 per day will apply.
+
+Please contact the service provider as soon as you know your return date has changed.
+
+Delays
+
+Please be aware that delays may occasionally occur, particularly during busy periods or due to circumstances outside the service provider’s control.
+
+We recommend allowing sufficient time for vehicle handover, airport transfers and vehicle collection when planning your journey.
+
+Vehicle & Personal Belongings
+
+Before handing over your vehicle:
+
+* Remove all valuables and personal belongings.
+* Keep all keys that are not required by the parking provider.
+* Make sure you have your documents, luggage and other essential items with you.
+* Only hand over the ignition key and required security fobs.
+
+Service Provider
+
+This parking service is provided by *Stansted Secure Park Ltd*.
+
+For any issues relating to the actual parking service, please contact the service provider directly on 07349851320.
+
+Disclaimer
+
+ParkingPartner acts solely as a booking comparison and reservation service. Parking services are provided by independent third-party operators.
+
+ParkingPartner does not operate the car park or provide the parking service directly. Any concerns relating to the parking service, including vehicle damage or loss, operational delays, missed flights or service quality, should be raised directly with the relevant parking provider.
+
+Please ensure you read the booking confirmation and applicable terms and conditions before travelling.`;
 
 
   const parkAndRideInstructions = `
