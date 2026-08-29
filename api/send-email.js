@@ -9,7 +9,7 @@ const resend = new Resend(process.env.RESEND_API_KEY);
 // ============================================================================
 
 const FROM_EMAIL = 'bookings@parkingpartner.co.uk';
-const FROM_NAME = "Parking Partner';
+const FROM_NAME = "Parking Partner";
 
 
 // ============================================================================
@@ -750,21 +750,89 @@ Website: parkingpartner.co.uk
       : '';
 
 
-    const instructionsHtml = activeInstructions
-      .split('\n')
-      .map(line => line.trim())
-      .filter(line => line !== '')
-      .map(line => `
-        <p style="
-          margin:0 0 8px 0;
-          font-size:13px;
-          color:#444;
-          line-height:1.6;
-        ">
-          ${escapeHtml(line)}
-        </p>
-      `)
-      .join('');
+    // Process instructions to highlight SERVICE PROVIDER CONTACT and Airport Number
+    const processInstructions = (text) => {
+      const lines = text.split('\n').filter(line => line.trim() !== '');
+      let result = '';
+      
+      for (const line of lines) {
+        let processedLine = escapeHtml(line.trim());
+        
+        // Check if this line contains SERVICE PROVIDER CONTACT
+        if (processedLine.includes('SERVICE PROVIDER CONTACT')) {
+          // Wrap in a highlighted container
+          result += `
+            <div style="
+              background: #f5a623;
+              padding: 12px 16px;
+              border-radius: 6px;
+              margin: 0 0 8px 0;
+              text-align: center;
+            ">
+              <p style="
+                margin: 0;
+                font-size: 18px;
+                font-weight: 700;
+                color: #0a2540;
+                letter-spacing: 1px;
+              ">
+                ${processedLine}
+              </p>
+            </div>
+          `;
+          continue;
+        }
+        
+        // Check if this line contains Airport Number or a phone number pattern
+        if (processedLine.includes('Airport Number:') || processedLine.includes('Telephone:')) {
+          // Make the phone number larger
+          const parts = processedLine.split(':');
+          if (parts.length === 2) {
+            const label = parts[0].trim();
+            const number = parts[1].trim();
+            result += `
+              <p style="
+                margin: 0 0 8px 0;
+                font-size: 13px;
+                color: #444;
+                line-height: 1.6;
+                font-weight: 600;
+              ">
+                ${label}:
+                <span style="
+                  font-size: 24px;
+                  font-weight: 900;
+                  color: #0a2540;
+                  background: #fff8ed;
+                  padding: 2px 12px;
+                  border-radius: 4px;
+                  display: inline-block;
+                ">
+                  ${number}
+                </span>
+              </p>
+            `;
+            continue;
+          }
+        }
+        
+        // Regular line
+        result += `
+          <p style="
+            margin: 0 0 8px 0;
+            font-size: 13px;
+            color: #444;
+            line-height: 1.6;
+          ">
+            ${processedLine}
+          </p>
+        `;
+      }
+      
+      return result;
+    };
+
+    const instructionsHtml = processInstructions(activeInstructions);
 
 
     return `<!DOCTYPE html>
@@ -812,7 +880,7 @@ Website: parkingpartner.co.uk
               color:#f5a623;
               letter-spacing:1px;
             ">
-              🏷️ COMPARE YOUR PARKING
+              🏷️ PARKING PARTNER
             </p>
 
             <p style="
@@ -1081,7 +1149,7 @@ Website: parkingpartner.co.uk
               color:#0a2540;
               font-weight:700;
             ">
-              Copyright © ${new Date().getFullYear()} Compare Your Parking. All rights reserved.
+              Copyright © ${new Date().getFullYear()} Parking Partner. All rights reserved.
             </p>
 
           </td>
