@@ -398,20 +398,12 @@ module.exports = async function handler(req, res) {
   // INSTRUCTIONS
   // ==========================================================================
 
-  // UPDATED MEET & GREET INSTRUCTIONS
+  // UPDATED MEET & GREET INSTRUCTIONS - REORGANIZED
   const meetGreetInstructions = `SERVICE PROVIDER CONTACT
 
 Airport Number: *07349851320*
 
 Please keep this number with you throughout your journey, as you will need to contact the parking provider before arrival and when returning to the airport.
-
-*IMPORTANT INFORMATION*
-
-* An airport levy of £13 each way is payable directly to the service provider and is not included in your parking price.
-* Please pay the £13 entry fee at the payment machine before handing your car park ticket and vehicle keys to the driver.
-* You only need to hand over the ignition key and any relevant security fobs. Please keep all other keys with you.
-* Please remove all valuables and personal belongings from your vehicle before handing over the keys.
-* Please ensure you have all necessary personal items with you before leaving the vehicle.
 
 *ARRIVAL & DROP-OFF PROCEDURE*
 
@@ -486,6 +478,14 @@ Before handing over your vehicle:
 This parking service is provided by *Stansted Secure Park Ltd*.
 
 For any issues relating to the actual parking service, please contact the service provider directly on 07349851320.
+
+*IMPORTANT INFORMATION*
+
+* An airport levy of £13 each way is payable directly to the service provider and is not included in your parking price.
+* Please pay the £13 entry fee at the payment machine before handing your car park ticket and vehicle keys to the driver.
+* You only need to hand over the ignition key and any relevant security fobs. Please keep all other keys with you.
+* Please remove all valuables and personal belongings from your vehicle before handing over the keys.
+* Please ensure you have all necessary personal items with you before leaving the vehicle.
 
 *DISCLAIMER*
 
@@ -1359,23 +1359,13 @@ Booking Status: ${finalBookingStatus}
             border-bottom:1px solid #dddddd;
           ">
 
-            <h1 style="
-              margin:0;
-              font-size:24px;
-              line-height:1.3;
-              color:#111111;
-              font-weight:700;
-            ">
-              New Booking Ref. No
-            </h1>
-
             <p style="
-              margin:8px 0 0;
+              margin:0;
               font-size:18px;
               color:#111111;
               font-weight:700;
             ">
-              [${escapeHtml(ref)}]
+              Reference Code: ${escapeHtml(ref)}
             </p>
 
           </td>
