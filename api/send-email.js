@@ -398,31 +398,22 @@ module.exports = async function handler(req, res) {
   // INSTRUCTIONS
   // ==========================================================================
 
-  const meetGreetInstructions = `*Customer Parking Instructions*
+  // UPDATED MEET & GREET INSTRUCTIONS - REORGANIZED
+  const meetGreetInstructions = `SERVICE PROVIDER CONTACT
 
-*Service Provider Contact*
-
-Telephone: *07349851320*
+Airport Number: *07349851320*
 
 Please keep this number with you throughout your journey, as you will need to contact the parking provider before arrival and when returning to the airport.
 
-Important Information
-
-* An airport levy of £13 each way is payable directly to the service provider and is not included in your parking price.
-* Please pay the £13 entry fee at the payment machine before handing your car park ticket and vehicle keys to the driver.
-* You only need to hand over the ignition key and any relevant security fobs. Please keep all other keys with you.
-* Please remove all valuables and personal belongings from your vehicle before handing over the keys.
-* Please ensure you have all necessary personal items with you before leaving the vehicle.
-
-Arrival & Drop-Off Procedure
+*ARRIVAL & DROP-OFF PROCEDURE*
 
 Please call *07349851320* when you are approximately 30 minutes away from Stansted Airport.
 
 This allows the service provider to prepare for your arrival and helps minimise waiting times.
 
-Important: Arriving without prior notice may result in a wait of up to 30 minutes and may also result in additional car park charges.
+*IMPORTANT:* Arriving without prior notice may result in a wait of up to 30 minutes and may also result in additional car park charges.
 
-Departure Location
+*DEPARTURE LOCATION*
 
 Short Stay Green Multi-Storey Car Park
 Terminal Road S
@@ -433,10 +424,9 @@ View Google Maps – Departure Location
 
 https://maps.app.goo.gl/wd1it7EvsgnCcEs27?g_st=ic
 
-
 Once you arrive at the designated location, follow the instructions provided by the service provider and hand over the required keys and car park ticket to the driver.
 
-Return Procedure
+*RETURN PROCEDURE*
 
 After your flight has landed:
 
@@ -448,33 +438,33 @@ After your flight has landed:
 
 Please allow additional time during busy periods or if there are unforeseen delays.
 
-Changes to Your Arrival or Return
+*CHANGES TO YOUR ARRIVAL OR RETURN*
 
-Early or Late Drop-Off
+*Early or Late Drop-Off*
 
-If you need to arrive earlier or later than your booked time, please provide the service provider with at least 2–3 hours’ notice.
+If you need to arrive earlier or later than your booked time, please provide the service provider with at least 2–3 hours' notice.
 
 While the provider will do its best to accommodate changes, delays may occur if insufficient notice is given.
 
-Early or Late Return
+*Early or Late Return*
 
-If your return flight or collection time changes, please provide at least 24 hours’ notice whenever possible.
+If your return flight or collection time changes, please provide at least 24 hours' notice whenever possible.
 
 This helps the provider prepare your vehicle and minimise delays.
 
-Additional Parking Days
+*Additional Parking Days*
 
 If your vehicle remains at the car park beyond the period originally booked, an additional charge of £20 per day will apply.
 
 Please contact the service provider as soon as you know your return date has changed.
 
-Delays
+*DELAYS*
 
-Please be aware that delays may occasionally occur, particularly during busy periods or due to circumstances outside the service provider’s control.
+Please be aware that delays may occasionally occur, particularly during busy periods or due to circumstances outside the service provider's control.
 
 We recommend allowing sufficient time for vehicle handover, airport transfers and vehicle collection when planning your journey.
 
-Vehicle & Personal Belongings
+*VEHICLE & PERSONAL BELONGINGS*
 
 Before handing over your vehicle:
 
@@ -483,13 +473,21 @@ Before handing over your vehicle:
 * Make sure you have your documents, luggage and other essential items with you.
 * Only hand over the ignition key and required security fobs.
 
-Service Provider
+*SERVICE PROVIDER*
 
 This parking service is provided by *Stansted Secure Park Ltd*.
 
 For any issues relating to the actual parking service, please contact the service provider directly on 07349851320.
 
-Disclaimer
+*IMPORTANT INFORMATION*
+
+* An airport levy of £13 each way is payable directly to the service provider and is not included in your parking price.
+* Please pay the £13 entry fee at the payment machine before handing your car park ticket and vehicle keys to the driver.
+* You only need to hand over the ignition key and any relevant security fobs. Please keep all other keys with you.
+* Please remove all valuables and personal belongings from your vehicle before handing over the keys.
+* Please ensure you have all necessary personal items with you before leaving the vehicle.
+
+*DISCLAIMER*
 
 ParkingPartner acts solely as a booking comparison and reservation service. Parking services are provided by independent third-party operators.
 
@@ -814,6 +812,67 @@ Website: parkingpartner.co.uk
             `;
             continue;
           }
+        }
+        
+        // Check if this line contains IMPORTANT or IMPORTANT INFORMATION
+        if (processedLine.includes('IMPORTANT INFORMATION') || 
+            processedLine.includes('IMPORTANT:') ||
+            processedLine.includes('IMPORTANT')) {
+          result += `
+            <div style="
+              background: #fff0f0;
+              border-left: 4px solid #dc3545;
+              padding: 8px 12px;
+              margin: 0 0 8px 0;
+              border-radius: 4px;
+            ">
+              <p style="
+                margin: 0;
+                font-size: 13px;
+                color: #721c24;
+                line-height: 1.6;
+                font-weight: 700;
+              ">
+                ${processedLine}
+              </p>
+            </div>
+          `;
+          continue;
+        }
+
+        // Check if this line contains a section header (all caps with stars)
+        if (processedLine.match(/^\*[A-Z\s&]+\*$/)) {
+          result += `
+            <p style="
+              margin: 12px 0 4px 0;
+              font-size: 14px;
+              color: #0a2540;
+              line-height: 1.6;
+              font-weight: 700;
+              text-transform: uppercase;
+              letter-spacing: 0.5px;
+            ">
+              ${processedLine}
+            </p>
+          `;
+          continue;
+        }
+
+        // Check if line has bold content (wrapped in * * in plain text)
+        if (processedLine.includes('*') && !processedLine.match(/^\*[A-Z\s&]+\*$/)) {
+          // Convert *bold* to HTML bold
+          processedLine = processedLine.replace(/\*([^*]+)\*/g, '<strong>$1</strong>');
+          result += `
+            <p style="
+              margin: 0 0 8px 0;
+              font-size: 13px;
+              color: #444;
+              line-height: 1.6;
+            ">
+              ${processedLine}
+            </p>
+          `;
+          continue;
         }
         
         // Regular line
@@ -1300,23 +1359,13 @@ Booking Status: ${finalBookingStatus}
             border-bottom:1px solid #dddddd;
           ">
 
-            <h1 style="
-              margin:0;
-              font-size:24px;
-              line-height:1.3;
-              color:#111111;
-              font-weight:700;
-            ">
-              New Booking Ref. No
-            </h1>
-
             <p style="
-              margin:8px 0 0;
+              margin:0;
               font-size:18px;
               color:#111111;
               font-weight:700;
             ">
-              [${escapeHtml(ref)}]
+              Reference Code: ${escapeHtml(ref)}
             </p>
 
           </td>
