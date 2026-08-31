@@ -17,6 +17,13 @@ const FROM_NAME = "Parking Partner";
 //
 // To add a future package/company, simply add another object here.
 // You do NOT need to rebuild or change the email-sending logic.
+//
+// - packageIds: exact-match candidates (checked first, against packageId)
+// - matchKeys:  substring-match candidates (checked second, against provider)
+// - recipients: everyone who gets the internal "new booking" notification
+//   for this package. bookingsparkingpartner@gmail.com is intentionally
+//   listed in every package below, plus DEFAULT_RECIPIENTS, so it always
+//   receives a copy regardless of which package matched (or didn't).
 // ============================================================================
 
 const PACKAGE_EMAIL_CONFIG = {
@@ -49,6 +56,8 @@ const PACKAGE_EMAIL_CONFIG = {
       'Secure Park',
       'Stansted Meet & Greet',
       'Elite Meet & Greet',
+      'Elite Meet & Greet STN',
+      'Stansted Premium Valet',
       'Gatwick Executive',
       'SP Meet'
     ],
@@ -58,6 +67,7 @@ const PACKAGE_EMAIL_CONFIG = {
       'Secure Park',
       'Stansted Meet & Greet',
       'Elite Meet & Greet',
+      'Stansted Premium Valet',
       'Gatwick Executive',
       'SP Meet'
     ],
@@ -1537,6 +1547,16 @@ Booking Status: ${finalBookingStatus}
     // Meet & Greet:
     //   stanstedparkingspaces@gmail.com
     //   bookingsparkingpartner@gmail.com
+    //
+    // NOTE: This is an internal transactional notification, not a
+    // marketing email, so it deliberately does NOT include
+    // List-Unsubscribe headers. Gmail shows a one-click "Unsubscribe"
+    // pill next to the sender when those headers are present - if
+    // anyone at a company recipient inbox ever clicked it, Gmail can
+    // silently start filtering/suppressing all future mail from
+    // bookings@parkingpartner.co.uk to that specific inbox, with no
+    // error on our side. Keep these headers only on the customer email
+    // above, where an unsubscribe option is actually appropriate.
     // ------------------------------------------------------------------------
 
     const companySubject =
@@ -1558,13 +1578,7 @@ Booking Status: ${finalBookingStatus}
       reply_to: FROM_EMAIL,
 
       headers: {
-        'X-Entity-Ref-ID': String(ref),
-
-        'List-Unsubscribe':
-          '<mailto:unsubscribe@parkingpartner.co.uk?subject=unsubscribe>',
-
-        'List-Unsubscribe-Post':
-          'List-Unsubscribe=One-Click'
+        'X-Entity-Ref-ID': String(ref)
       }
 
     });
