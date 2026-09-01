@@ -21,7 +21,7 @@ const FROM_NAME = "Parking Partner";
 // - packageIds: exact-match candidates (checked first, against packageId)
 // - matchKeys:  substring-match candidates (checked second, against provider)
 // - recipients: everyone who gets the internal "new booking" notification
-//   for this package. bookingsparkingpartner@gmail.com is intentionally
+//   for this package. ppbookings026@gmail.com is intentionally
 //   listed in every package below, plus DEFAULT_RECIPIENTS, so it always
 //   receives a copy regardless of which package matched (or didn't).
 // ============================================================================
@@ -46,7 +46,7 @@ const PACKAGE_EMAIL_CONFIG = {
 
     recipients: [
       'stnbookings26@gmail.com',
-      'bookingsparkingpartner@gmail.com'
+      'ppbookings026@gmail.com'
     ]
   },
 
@@ -74,7 +74,7 @@ const PACKAGE_EMAIL_CONFIG = {
 
     recipients: [
       'stanstedparkingspaces@gmail.com',
-      'bookingsparkingpartner@gmail.com'
+      'ppbookings026@gmail.com'
     ]
   }
 };
@@ -84,7 +84,7 @@ const PACKAGE_EMAIL_CONFIG = {
 // This prevents an unknown package from incorrectly being treated
 // as Meet & Greet.
 const DEFAULT_RECIPIENTS = [
-  'bookingsparkingpartner@gmail.com'
+  'ppbookings026@gmail.com'
 ];
 
 
@@ -1542,11 +1542,11 @@ Booking Status: ${finalBookingStatus}
     //
     // SPS Park & Ride:
     //   stnbookings26@gmail.com
-    //   bookingsparkingpartner@gmail.com
+    //   ppbookings026@gmail.com
     //
     // Meet & Greet:
     //   stanstedparkingspaces@gmail.com
-    //   bookingsparkingpartner@gmail.com
+    //   ppbookings026@gmail.com
     //
     // NOTE: This is an internal transactional notification, not a
     // marketing email, so it deliberately does NOT include
